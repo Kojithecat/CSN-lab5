@@ -1,2 +1,1 @@
-# CSN
-Repository for the CSN labs
+# CSN lab 5
