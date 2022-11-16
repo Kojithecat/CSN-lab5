@@ -16,13 +16,13 @@ dendPlot(fc)
 as_adjacency_matrix(as.undirected(karate,mode = "each"))
 
 evaluate_significance(karate,alg_list=list(Louvain=cluster_louvain,
-                                             "label prop"= cluster_label_prop,
-                                             walktrap=cluster_walktrap),
-                        gt_clustering=V(karate)$Faction)
+                                           "label prop"= cluster_label_prop,
+                                           walktrap=cluster_walktrap),
+                      gt_clustering=V(karate)$Faction)
 
 B <- matrix(c(1, 0.2, 0.2, 1), ncol=2)
 G <- barabasi_albert_blocks(m=4, p=c(0.5, 0.5), B=B, t_max=100,
-                              type="Hajek", sample_with_replacement = FALSE)
+                            type="Hajek", sample_with_replacement = FALSE)
 plot(G, vertex.color=(V(G)$label),vertex.label=NA,vertex.size=10)
 
 
@@ -30,4 +30,20 @@ plot(G, vertex.color=(V(G)$label),vertex.label=NA,vertex.size=10)
 
 #union: sum of cardinalities - intersection
 
+jaccard_idx <- function(A, B){
+  
+  int <- c()
+  for(elem in A){
+    if(elem %in% B){
+      int <- append(elem,int) 
+      }
+  }
+  int <- length(int)
+  union = length(A) + length(B) - int
+  jaccard_idx = int/union
+  return(jaccard_idx)
+  
+}
+
+#jaccard_sim
 
