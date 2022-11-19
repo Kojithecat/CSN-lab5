@@ -47,3 +47,21 @@ jaccard_idx <- function(A, B){
 
 #jaccard_sim
 
+jaccard_sim <- function(Ca, Cb){ #Ca on rows, Cb on columns
+  tab <- matrix(c(1:(length(Ca)*length(Cb))), ncol = length(Cb), byrow=TRUE)
+  colnames(tab) = c(1:length(Cb))
+  rownames(tab) <- c(1:length(Ca))
+  for (i in 1:(length(Cb))){
+    for(j in 1:(length(Ca))){ #Since matrix go by columns first, loops are inverted
+      tab[j+length(Ca)*(i-1)] = jaccard_idx(unlist(Ca[j]),unlist(Cb[i])) #j+length(Ca)*(i-1) is the index calculation
+      
+
+    }
+    #print(tab)
+  }
+  return(tab)
+}
+
+fc <- fastgreedy.community(karate)
+wc <- walktrap.community(karate)
+jaccard_sim(wc,fc)
