@@ -62,6 +62,38 @@ jaccard_sim <- function(Ca, Cb){ #Ca on rows, Cb on columns
   return(tab)
 }
 
+match_clusters <- function(JS, name1, name2){
+  
+  cols <- ncol(JS) 
+  rows <- nrow(JS)
+  
+  match <- c()
+  lab <- c()
+  
+  for(i in 1:cols){
+    s <- 0
+    idxi <- 0
+    idxj <- 0
+    for(j in 1:rows){
+      if(s < JS[j + rows*(i-1)]){
+        s = JS[j + rows*(i-1)]
+        idxi <- i
+        idxj <- j
+      }
+    }
+    match <- append(match,s)
+    lab <- append(lab,paste("(",name1,".",idxj,name2,".",idxj,")"))
+  }
+  m <- matrix(match, ncol = length(match), byrow=TRUE)
+  colnames(m) = lab
+  return(m)
+}
+
+
 fc <- fastgreedy.community(karate)
 wc <- walktrap.community(karate)
-jaccard_sim(wc,fc)
+JS <- jaccard_sim(fc,wc)
+print(JS)
+ncol(JS) 
+nrow(JS)
+match_clusters(JS,"FC","WC")
