@@ -62,7 +62,7 @@ jaccard_sim <- function(Ca, Cb){ #Ca on rows, Cb on columns
   return(tab)
 }
 
-match_clusters <- function(JS, name1, name2){
+match_clusters <- function(JS, name1, name2){ #Matching of the most similar cluster labeling according to the jaccard index
   
   cols <- ncol(JS) 
   rows <- nrow(JS)
@@ -70,11 +70,11 @@ match_clusters <- function(JS, name1, name2){
   match <- c()
   lab <- c()
   
-  for(i in 1:cols){
+  for(i in 1:rows){
     s <- 0
     idxi <- 0
     idxj <- 0
-    for(j in 1:rows){
+    for(j in 1:cols){
       if(s < JS[j + rows*(i-1)]){
         s = JS[j + rows*(i-1)]
         idxi <- i
@@ -89,11 +89,32 @@ match_clusters <- function(JS, name1, name2){
   return(m)
 }
 
+Wmean <- function(MC, GT){ #Mean of the match_clusters vector taking into account the ground truth cluster size
+  s <- 0
+  total <-0
+  for(i in 1:length(GT)){
+    total <- total + length(unlist(GT[i]))
+  }
+  
+  for(i in 1:length(MC)){
+    s <- s + MC[i]/length(unlist(GT[i]))
+  }
+  
+  return(s)
+}
+
 
 fc <- fastgreedy.community(karate)
 wc <- walktrap.community(karate)
+wc
+fc
+unname(membership(wc))
+V(karate)$Faction
 JS <- jaccard_sim(fc,wc)
 print(JS)
 ncol(JS) 
 nrow(JS)
-match_clusters(JS,"FC","WC")
+MC <- match_clusters(JS,"FC","WC")
+Wmean(MC,fc)
+
+
