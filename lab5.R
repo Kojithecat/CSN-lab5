@@ -1,6 +1,6 @@
 library(igraph)
 library(igraphdata)
-library(clustAnalytics)ç
+library(clustAnalytics)
 library(xtable)
 data(karate,package="igraphdata")
 wc <- walktrap.community(karate)
@@ -253,14 +253,14 @@ G <- barabasi_albert_blocks(m=4, p=c(0.1, 0.3, 0.4, 0.2), B=B, t_max=200,
                             type="Hajek", sample_with_replacement = FALSE)
 plot(G, vertex.color=(V(G)$label),vertex.label=NA,vertex.size=10)
 
-tab <-evaluate_significance(G,alg_list=list(Louvain=cluster_louvain,
-                                                         "label prop"= cluster_label_prop,
+evaluate_significance(G,alg_list=list(Louvain=cluster_louvain,
+                                                        "label prop"= cluster_label_prop,
                                                          walktrap=cluster_walktrap, 
                                                          "Edge bet." = cluster_edge_betweenness,
                                                          infomap=cluster_infomap)
                                                       ,gt_clustering=V(G)$label)
 
-print(xtable(tab, type = "latex"))
+prnt(xtable(tab, type = "latex"))
 
 
 gt <- V(G)$label
@@ -334,10 +334,13 @@ data(enron,package="igraphdata")
 #                                             "label prop"= cluster_label_prop,
 #                                             walktrap=cluster_walktrap, "Edge bet." = cluster_edge_betweenness,
 #                                           infomap=cluster_infomap))
-gtc <- cluster_infomap(G)
+
+enron <- as.undirected(enron)
+
+gtc <- cluster_infomap(enron)
 gtc
 
-louc <- cluster_louvain(G)
+louc <- cluster_louvain(enron)
 louc
 JS <- jaccard_sim(gtc,louc)
 JS
@@ -348,7 +351,7 @@ print(xtable(MC, type = "latex"))
 Wmean(MC,gtc)
 
 
-labc <- cluster_label_prop(G)
+labc <- cluster_label_prop(enron)
 labc
 JS <- jaccard_sim(gtc,labc)
 JS
@@ -359,7 +362,7 @@ print(xtable(MC, type = "latex"))
 Wmean(MC,gtc)
 
 
-wc <- walktrap.community(G)
+wc <- walktrap.community(enron)
 wc
 JS <- jaccard_sim(gtc,wc)
 JS
@@ -369,7 +372,7 @@ MC
 print(xtable(MC, type = "latex"))
 Wmean(MC,gtc)
 
-ebc <- cluster_edge_betweenness(G)
+ebc <- cluster_edge_betweenness(enron)
 ebc
 
 JS <- jaccard_sim(gtc,ebc)
@@ -384,6 +387,7 @@ Wmean(MC,gtc)
 
 data(UKfaculty,package="igraphdata")
 V(UKfaculty)
+G <- as.undirected(UKfaculty)
 
 gtc <- cluster_walktrap(G)
 gtc
