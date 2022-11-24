@@ -106,7 +106,7 @@ Wmean <- function(MC, GT){ #Mean of the match_clusters vector taking into accoun
   return(s)
 }
 
-make_gt <- function(gt, V){
+make_gt <- function(gt, V){ #Ground truth labeling
   l <- list()
   for(i in 1:max(gt)){
       lc <- list() 
@@ -132,7 +132,7 @@ make_gt <- function(gt, V){
   
 }
   
-make_gt_numeric <- function(gt){
+make_gt_numeric <- function(gt){ #Ground truth labeling when vertices are indices
   l <- list()
   for(i in 1:max(gt)){
     lc <- list() 
